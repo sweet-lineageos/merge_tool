@@ -137,7 +137,7 @@ fetch_and_merge() {
 
 merge_tag() {
     tag=$1
-    msg="Merge tag '$tag' into 12.0"
+    msg="Merge tag '$tag' into lineage-19.1"
     cat $SCRIPT_PATH/track_google | while read repo || [[ -n $repo ]];
     do
         loc=$repo
@@ -148,10 +148,10 @@ merge_tag() {
 }
 
 merge_los() {
-    msg="Merge 'lineage-19.0' into 12.0"
+    msg="Merge 'lineage-19.1'"
     cat $SCRIPT_PATH/track_los | while read repo || [[ -n $repo ]];
     do
-        tag=lineage-19.0
+        tag=lineage-19.1
         loc=$repo
         repo="android_${repo////_}"
         link="https://github.com/lineageos/$repo"
@@ -167,9 +167,9 @@ push_repos() {
         cd $ANDROID_PATH/$repo
 
         if [ $DRY_MODE == 1 ]; then
-            echo "git push crdroid HEAD:12.0"
+            echo "git push custom HEAD:lineage-19.1"
         else
-            git push crdroid HEAD:12.0
+            git push custom HEAD:lineage-19.1
         fi
 
         if [ $? == 0 ]; then
@@ -197,7 +197,7 @@ case $job in
             (cd .repo/manifests && git checkout -- . )
 
             echo ${ylw}"Syncing repo manifest..."${txtrst}
-            repo init -u git://github.com/crdroidandroid/android.git -b 12.0 -q
+            repo init -u repo init -u https://github.com/sweet-lineageos/android.git -b lineage-19.1 -q
 
             echo ${ylw}"Modifying release version in repo manifest..."${txtrst}
             sed -i "s|android-12.0.0_r$(expr $revision - 1)|android-12.0.0_r$revision|g" .repo/manifests/default.xml
@@ -271,11 +271,6 @@ case $job in
             push_repos
             rm $SCRIPT_PATH/merge_succeeded $SCRIPT_PATH/merge_failed 2>/dev/null
 
-            echo "Resetting repo manifest..."
-            (cd .repo/manifests && git checkout -- . )
-
-            echo ${ylw}"Syncing repo manifest..."${txtrst}
-            repo init -u git://github.com/crdroidandroid/android.git -b 12.0 -q
         fi
         exit
     ;;
