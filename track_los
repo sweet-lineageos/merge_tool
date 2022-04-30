@@ -2,5 +2,7 @@ android
 build/make
 build/soong
 frameworks/base
+packages/apps/Dialer
 packages/apps/Settings
 packages/apps/Updater
+vendor/lineage
